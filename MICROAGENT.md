@@ -126,7 +126,7 @@ sshpass -p 'Fr3qu3nc1.' ssh root@10.135.215.172 "docker logs ms365-sharepoint-ap
 sshpass -p 'Fr3qu3nc1.' ssh root@10.135.215.172 "curl -v https://ms365-sharepoint.brainaihub.tech/health"
 
 # Check nginx config
-sshpass -p 'Fr3qu3nc1.' ssh root@10.135.215.172 "docker exec nginx-swissknife nginx -t"
+sshpass -p 'Fr3qu3nc1.' ssh root@10.135.215.172 "docker exec swissknife-nginx nginx -t"
 
 # Check certificate
 sshpass -p 'Fr3qu3nc1.' ssh root@10.135.215.172 "ls -la /opt/swissknife/data/letsencrypt/live/ms365-sharepoint.brainaihub.tech/"
@@ -272,11 +272,11 @@ server {
 NGINX_HTTP
 
 # Test nginx config
-docker exec nginx-swissknife nginx -t
+docker exec swissknife-nginx nginx -t
 
 # If OK, reload
 if [ $? -eq 0 ]; then
-    docker exec nginx-swissknife nginx -s reload
+    docker exec swissknife-nginx nginx -s reload
     echo "✅ Nginx reloaded (HTTP block added)"
 else
     echo "❌ Nginx config error - FIX BEFORE PROCEEDING!"
@@ -365,11 +365,11 @@ server {
 NGINX_HTTPS
 
 # Test nginx config
-docker exec nginx-swissknife nginx -t
+docker exec swissknife-nginx nginx -t
 
 # If OK, reload
 if [ $? -eq 0 ]; then
-    docker exec nginx-swissknife nginx -s reload
+    docker exec swissknife-nginx nginx -s reload
     echo "✅ Nginx reloaded (HTTPS block added)"
 else
     echo "❌ Nginx config error - FIX BEFORE PROCEEDING!"
@@ -477,7 +477,7 @@ dig ms365-sharepoint.brainaihub.tech +short
 curl -v http://ms365-sharepoint.brainaihub.tech/.well-known/acme-challenge/test
 
 # Check nginx HTTP block
-docker exec nginx-swissknife cat /etc/nginx/conf.d/default.conf | grep -A 10 "ms365-sharepoint"
+docker exec swissknife-nginx cat /etc/nginx/conf.d/default.conf | grep -A 10 "ms365-sharepoint"
 ```
 
 ### Issue: nginx -t fails
@@ -486,15 +486,15 @@ docker exec nginx-swissknife cat /etc/nginx/conf.d/default.conf | grep -A 10 "ms
 **Fix:**
 ```bash
 # View error
-docker exec nginx-swissknife nginx -t
+docker exec swissknife-nginx nginx -t
 
 # Check config syntax
-docker exec nginx-swissknife cat /etc/nginx/conf.d/default.conf
+docker exec swissknife-nginx cat /etc/nginx/conf.d/default.conf
 
 # Restore backup
 cd /opt/swissknife/nginx-swissknife/conf.d
 cp default.conf.backup-[TIMESTAMP] default.conf
-docker exec nginx-swissknife nginx -s reload
+docker exec swissknife-nginx nginx -s reload
 ```
 
 ### Issue: Container won't start

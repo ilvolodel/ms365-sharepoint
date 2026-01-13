@@ -114,12 +114,12 @@ echo ""
 # Step 6: Test and reload nginx
 echo "🔧 Step 6: Testing and reloading nginx..."
 sshpass -p "$DROPLET_PASS" ssh -o StrictHostKeyChecking=no root@$DROPLET_IP << 'ENDSSH'
-if docker exec nginx-swissknife nginx -t 2>&1 | grep -q "successful"; then
-    docker exec nginx-swissknife nginx -s reload
+if docker exec swissknife-nginx nginx -t 2>&1 | grep -q "successful"; then
+    docker exec swissknife-nginx nginx -s reload
     echo "✅ Nginx reloaded successfully"
 else
     echo "❌ Nginx config test failed!"
-    docker exec nginx-swissknife nginx -t
+    docker exec swissknife-nginx nginx -t
     exit 1
 fi
 ENDSSH
@@ -210,12 +210,12 @@ echo ""
 # Step 10: Test and reload nginx again
 echo "🔧 Step 10: Testing and reloading nginx (final)..."
 sshpass -p "$DROPLET_PASS" ssh -o StrictHostKeyChecking=no root@$DROPLET_IP << 'ENDSSH'
-if docker exec nginx-swissknife nginx -t 2>&1 | grep -q "successful"; then
-    docker exec nginx-swissknife nginx -s reload
+if docker exec swissknife-nginx nginx -t 2>&1 | grep -q "successful"; then
+    docker exec swissknife-nginx nginx -s reload
     echo "✅ Nginx reloaded with HTTPS config"
 else
     echo "❌ Nginx config test failed!"
-    docker exec nginx-swissknife nginx -t
+    docker exec swissknife-nginx nginx -t
     exit 1
 fi
 ENDSSH
