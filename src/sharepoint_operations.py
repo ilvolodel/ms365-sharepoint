@@ -18,7 +18,7 @@ class SharePointOperations:
     """SharePoint business logic."""
     
     def __init__(self):
-        self.graph = GraphClient()
+        pass
     
     def execute(self, action: str, params: dict) -> dict:
         """
@@ -102,7 +102,7 @@ class SharePointOperations:
                 logger.info(f"Resolving site URL to path: {site_path}")
                 
                 # GET /sites/{hostname}:{path}:
-                response = self.graph.get(
+                response = GraphClient(access_token).get(
                     endpoint=f"/sites/{site_path}",
                     access_token=access_token
                 )
@@ -114,7 +114,7 @@ class SharePointOperations:
                 }
         else:
             # Use site ID directly
-            response = self.graph.get(
+            response = GraphClient(access_token).get(
                 endpoint=f"/sites/{site_id}",
                 access_token=access_token
             )
@@ -157,7 +157,7 @@ class SharePointOperations:
             # List all accessible sites (root + subsites)
             endpoint = f"/sites?$top={max_results}"
         
-        response = self.graph.get(
+        response = GraphClient(access_token).get(
             endpoint=endpoint,
             access_token=access_token
         )
@@ -209,7 +209,7 @@ class SharePointOperations:
         site_id = site_result["site"]["id"]
         
         # GET /sites/{site-id}/lists
-        response = self.graph.get(
+        response = GraphClient(access_token).get(
             endpoint=f"/sites/{site_id}/lists",
             access_token=access_token
         )
@@ -287,7 +287,7 @@ class SharePointOperations:
         query_string = "&".join(query_params)
         
         # GET /sites/{site-id}/lists/{list-id}/items
-        response = self.graph.get(
+        response = GraphClient(access_token).get(
             endpoint=f"/sites/{site_id}/lists/{list_id}/items?{query_string}",
             access_token=access_token
         )
@@ -351,7 +351,7 @@ class SharePointOperations:
         # POST /sites/{site-id}/lists/{list-id}/items
         body = {"fields": fields}
         
-        response = self.graph.post(
+        response = GraphClient(access_token).post(
             endpoint=f"/sites/{site_id}/lists/{list_id}/items",
             access_token=access_token,
             json_data=body
@@ -407,7 +407,7 @@ class SharePointOperations:
         site_id = site_result["site"]["id"]
         
         # PATCH /sites/{site-id}/lists/{list-id}/items/{item-id}/fields
-        response = self.graph.patch(
+        response = GraphClient(access_token).patch(
             endpoint=f"/sites/{site_id}/lists/{list_id}/items/{item_id}/fields",
             access_token=access_token,
             json_data=fields

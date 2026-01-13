@@ -292,3 +292,7 @@ class MicrosoftGraphClient:
             User profile data
         """
         return self.get('/me')
+
+
+# Alias for backward compatibility
+GraphClient = MicrosoftGraphClient
