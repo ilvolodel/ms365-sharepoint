@@ -18,11 +18,11 @@ COPY src/ ./src/
 RUN mkdir -p /app/logs
 
 # Expose port
-EXPOSE 8013
+EXPOSE 8046
 
-# Health check
+# Health check (uses PORT env var with fallback)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
-  CMD curl -f http://localhost:8013/health || exit 1
+  CMD curl -f http://localhost:${PORT:-8046}/health || exit 1
 
-# Run FastAPI with uvicorn
-CMD ["python", "-m", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8013"]
+# Run FastAPI with uvicorn (PORT from env, fallback to 8046)
+CMD sh -c "python -m uvicorn src.main:app --host 0.0.0.0 --port ${PORT:-8046}"
