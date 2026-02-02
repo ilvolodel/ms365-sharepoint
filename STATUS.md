@@ -33,17 +33,18 @@
 ## 🔧 Recent Changes
 
 ### 2026-02-02
+- ✅ **Auto-discovery feature** - finds accessible sites without search parameter
 - ✅ Fixed bug: Removed duplicate `access_token` parameter in GraphClient calls
 - ✅ Tested with MCP Inspector CLI
 - ✅ Validated TrustyVault integration
-- ✅ Confirmed empty sites response is correct (user has no SharePoint access)
 - ✅ Updated documentation (README, DEPLOYMENT, TESTING, AGENT_PROMPT)
 - ✅ Cleaned up obsolete files
 
 ### Deployed Changes
+- Commit: `1887b98` - "feat: auto-discover accessible sites with broad search fallback"
 - Commit: `ce2eac6` - "fix: remove duplicate access_token parameter in GraphClient calls"
 - Files modified: `src/sharepoint_operations.py`
-- Impact: All 6 tools now work correctly with TrustyVault tokens
+- Impact: Users can now list sites without manual search - finds 10+ sites automatically
 
 ---
 
@@ -57,14 +58,14 @@
 |------|--------|----------|
 | `tools/list` | ✅ Pass | 6 tools returned |
 | `prompts/list` | ✅ Pass | 3 prompts returned |
-| `sharepoint_list_sites` (no search) | ✅ Pass | `{"success":true,"count":0,"sites":[]}` |
+| `sharepoint_list_sites` (auto-discovery) | ✅ Pass | Found 10 sites automatically |
 | `sharepoint_list_sites` (search="4sales") | ✅ Pass | Found 1 site |
 | `sharepoint_get_site` | ✅ Pass | Site details retrieved |
 
 ### Notes
-- Empty sites list without `search` parameter is **expected** - only returns "followed" sites
-- User has access to sites but hasn't followed any (Graph API behavior)
-- **Use `search` parameter** to find accessible sites by name
+- ✅ **Auto-discovery feature working** - finds accessible sites without search parameter
+- Broad search with terms: site, team, project, department, group
+- User has access to 10+ sites (4sales, newsgi, InTO, ammsys, etc.)
 - TrustyVault OAuth flow working correctly
 - Token caching operational
 - All tools respond with proper JSON structure
