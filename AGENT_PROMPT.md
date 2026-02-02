@@ -31,13 +31,12 @@ User richiede operazione SharePoint
 **Scopo**: Lista i siti SharePoint accessibili  
 **Quando usarlo**: Prima operazione per esplorare SharePoint
 
-**⚠️ IMPORTANTE**: Senza `search`, restituisce solo i siti "seguiti" dall'utente (spesso 0).  
-**Usa sempre il parametro `search`** per trovare siti accessibili per nome.
+**✨ AUTO-DISCOVERY**: Se nessun sito "seguito", cerca automaticamente con termini comuni (site, team, project, department, group).
 
 **Parametri:**
 - `session_token` (required) - Token TrustyVault
 - `max_results` (optional, default=50) - Max siti da restituire (1-500)
-- `search` (optional, **RACCOMANDATO**) - Query di ricerca per nome sito
+- `search` (optional) - Query di ricerca specifica per nome sito
 
 **Esempio:**
 ```json
