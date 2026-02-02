@@ -104,7 +104,6 @@ class SharePointOperations:
                 # GET /sites/{hostname}:{path}:
                 response = GraphClient(access_token).get(
                     endpoint=f"/sites/{site_path}",
-                    access_token=access_token
                 )
             except Exception as e:
                 logger.error(f"Error parsing site URL: {e}")
@@ -116,7 +115,6 @@ class SharePointOperations:
             # Use site ID directly
             response = GraphClient(access_token).get(
                 endpoint=f"/sites/{site_id}",
-                access_token=access_token
             )
         
         return {
@@ -159,7 +157,6 @@ class SharePointOperations:
         
         response = GraphClient(access_token).get(
             endpoint=endpoint,
-            access_token=access_token
         )
         
         sites = response.get("value", [])
@@ -211,7 +208,6 @@ class SharePointOperations:
         # GET /sites/{site-id}/lists
         response = GraphClient(access_token).get(
             endpoint=f"/sites/{site_id}/lists",
-            access_token=access_token
         )
         
         lists = response.get("value", [])
@@ -289,7 +285,6 @@ class SharePointOperations:
         # GET /sites/{site-id}/lists/{list-id}/items
         response = GraphClient(access_token).get(
             endpoint=f"/sites/{site_id}/lists/{list_id}/items?{query_string}",
-            access_token=access_token
         )
         
         items = response.get("value", [])
@@ -353,7 +348,6 @@ class SharePointOperations:
         
         response = GraphClient(access_token).post(
             endpoint=f"/sites/{site_id}/lists/{list_id}/items",
-            access_token=access_token,
             json_data=body
         )
         
@@ -409,7 +403,6 @@ class SharePointOperations:
         # PATCH /sites/{site-id}/lists/{list-id}/items/{item-id}/fields
         response = GraphClient(access_token).patch(
             endpoint=f"/sites/{site_id}/lists/{list_id}/items/{item_id}/fields",
-            access_token=access_token,
             json_data=fields
         )
         
