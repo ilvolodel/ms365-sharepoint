@@ -161,6 +161,42 @@ class SharePointOperations:
         
         sites = response.get("value", [])
         
+        # If no followed sites found and no explicit search, try broad search
+        if len(sites) == 0 and not search:
+            logger.info("No followed sites found, attempting broad search for accessible sites")
+            # Try searching with common keywords that often match site names
+            # This helps discover sites the user has access to but hasn't followed
+            search_terms = ["site", "team", "project", "department", "group"]
+            all_sites = []
+            seen_ids = set()
+            
+            for term in search_terms:
+                try:
+                    search_endpoint = f"/sites?search={term}&$top=100"
+                    search_response = GraphClient(access_token).get(
+                        endpoint=search_endpoint,
+                    )
+                    found_sites = search_response.get("value", [])
+                    
+                    # Deduplicate by site ID
+                    for site in found_sites:
+                        site_id = site.get("id")
+                        if site_id and site_id not in seen_ids:
+                            seen_ids.add(site_id)
+                            all_sites.append(site)
+                    
+                    # Stop if we found enough sites
+                    if len(all_sites) >= max_results:
+                        break
+                except Exception as e:
+                    logger.warning(f"Search term '{term}' failed: {e}")
+                    continue
+            
+            sites = all_sites[:max_results]
+            
+            if len(sites) > 0:
+                logger.info(f"Broad search found {len(sites)} accessible sites")
+        
         return {
             "success": True,
             "count": len(sites),
