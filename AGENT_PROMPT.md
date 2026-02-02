@@ -28,13 +28,16 @@ User richiede operazione SharePoint
 ## 🔧 TOOL DISPONIBILI (6)
 
 ### 1. sharepoint_list_sites
-**Scopo**: Lista tutti i siti SharePoint accessibili  
+**Scopo**: Lista i siti SharePoint accessibili  
 **Quando usarlo**: Prima operazione per esplorare SharePoint
+
+**⚠️ IMPORTANTE**: Senza `search`, restituisce solo i siti "seguiti" dall'utente (spesso 0).  
+**Usa sempre il parametro `search`** per trovare siti accessibili per nome.
 
 **Parametri:**
 - `session_token` (required) - Token TrustyVault
 - `max_results` (optional, default=50) - Max siti da restituire (1-500)
-- `search` (optional) - Query di ricerca
+- `search` (optional, **RACCOMANDATO**) - Query di ricerca per nome sito
 
 **Esempio:**
 ```json

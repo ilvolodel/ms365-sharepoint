@@ -57,10 +57,14 @@
 |------|--------|----------|
 | `tools/list` | ✅ Pass | 6 tools returned |
 | `prompts/list` | ✅ Pass | 3 prompts returned |
-| `sharepoint_list_sites` | ✅ Pass | `{"success":true,"count":0,"sites":[]}` |
+| `sharepoint_list_sites` (no search) | ✅ Pass | `{"success":true,"count":0,"sites":[]}` |
+| `sharepoint_list_sites` (search="4sales") | ✅ Pass | Found 1 site |
+| `sharepoint_get_site` | ✅ Pass | Site details retrieved |
 
 ### Notes
-- Empty sites list is **expected** - test user has no SharePoint access
+- Empty sites list without `search` parameter is **expected** - only returns "followed" sites
+- User has access to sites but hasn't followed any (Graph API behavior)
+- **Use `search` parameter** to find accessible sites by name
 - TrustyVault OAuth flow working correctly
 - Token caching operational
 - All tools respond with proper JSON structure

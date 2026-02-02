@@ -119,6 +119,9 @@ yes | npx @modelcontextprotocol/inspector@latest \
 
 ### List Sites
 
+**⚠️ IMPORTANT**: Without `search` parameter, this returns only "followed" sites (often 0). Always use `search` to find sites by name.
+
+**Without search** (returns only followed sites):
 ```bash
 yes | npx @modelcontextprotocol/inspector@latest \
   --cli https://ms365-sharepoint.brainaihub.tech/mcp/sse \
@@ -130,7 +133,20 @@ yes | npx @modelcontextprotocol/inspector@latest \
   --tool-arg max_results=10
 ```
 
-**Expected Success**:
+**With search** (RECOMMENDED - finds accessible sites):
+```bash
+yes | npx @modelcontextprotocol/inspector@latest \
+  --cli https://ms365-sharepoint.brainaihub.tech/mcp/sse \
+  --transport sse \
+  --header "Authorization: Bearer ms365-sharepoint-prod-YOUR_KEY" \
+  --method tools/call \
+  --tool-name sharepoint_list_sites \
+  --tool-arg session_token="YOUR_SESSION_TOKEN" \
+  --tool-arg search="engineering" \
+  --tool-arg max_results=10
+```
+
+**Expected Success (with results)**:
 ```json
 {
   "content": [{
@@ -140,7 +156,7 @@ yes | npx @modelcontextprotocol/inspector@latest \
 }
 ```
 
-**Expected if no sites**:
+**Expected if no followed sites (without search)**:
 ```json
 {
   "content": [{
